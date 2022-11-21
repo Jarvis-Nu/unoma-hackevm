@@ -1,13 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
+import AddModal from "./AddModal";
+import { modalState } from "../atoms/modalAtom"
+import { useRecoilState } from "recoil"
 
 interface Props {
     page: string
 }
 
 export default function SideNav({ page }: Props) {
+    const [addPodcastModal, setAddPodcastModal] = useRecoilState(modalState)
   return (
-    <div className="fixed left-0 transform transition duration-1000 ease-in-out sidenav md:-translate-x-0
+    <div className="fixed left-0 transform transition duration-1000 ease-in-out sidenav -translate-x-full md:-translate-x-0
         h-screen 2-64 md:w-72 bg-black px-5 py-5 overflow-y-scroll scrollbar-thin scrollbar-thumb-[#008BEE]">
         <div className="font-bold text-black uppercase h1"><span className="text-white">Un</span><span className="text-blue">oma</span></div>
         <div className="pt-5 space-y-2.5">
@@ -62,13 +66,10 @@ export default function SideNav({ page }: Props) {
                     </a>
                 </Link>
             </div>
-            <div>
-                <Link href="/add">
-                    <a className={`flex items-center h-10 hover:bg-blue ${page == "add" && "bg-blue"} px-5 rounded-lg group space-x-2.5`}>
-                        <Image src={"/add.png"} width={20} height={20} />
-                        <h3 className={`h3 text-gray group-hover:text-white ${page == "add" && "!text-white"}`}>Add Podcast</h3>
-                    </a>
-                </Link>
+            <div className={`flex items-center h-10 hover:bg-blue ${page == "add" && "bg-blue"} px-5 rounded-lg group space-x-2.5 hover:cursor-pointer`}
+                onClick={() => setAddPodcastModal(true)}>
+                <Image src={"/add.png"} width={20} height={20} />
+                <h3 className={`h3 text-gray group-hover:text-white ${page == "add" && "!text-white"}`}>Add Podcast</h3>
             </div>
             <div>
                 <Link href="/featured">
@@ -122,6 +123,7 @@ export default function SideNav({ page }: Props) {
                 </Link>
             </div>
         </div>
+        <AddModal />
     </div>
   )
 }
